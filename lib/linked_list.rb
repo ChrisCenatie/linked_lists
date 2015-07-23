@@ -1,5 +1,5 @@
 require_relative 'node'
-#Using iterative process
+
 class List
 
   def initialize(data = nil)
@@ -47,38 +47,22 @@ class List
 
   def insert(data, index)
     node = Node.new(data)
-    #same code used in insert, needs to be turned into it's own method
-    #example def iterator(method,position)
     count = 0
     current_node = @head
     if index == 0
       prepends(data)
     else
-      #same logic used in pop, needs to be turned into its own method
-      while count < index
-        if count == (index -1)
-          node.next = current_node.next
-          current_node.next = node
-        else
-          current_node = current_node.next
-        end
-        count += 1
-      end
+      method_iterator("insert", index, node)
     end
   end
 
-  def includes?(data)
-    conditional =[]
-    current_node = @head
-    while current_node.next != nil
-      if current_node.data == data
-        conditional << true
-      else
-        conditional << false
-      end
-      current_node = current_node.next
+  def includes?(data,current_node = @head)
+    if current_node.data == data
+      return true
+    elsif !(current_node.tail?)
+      includes?(data,current_node.next)
     end
-    conditional.include?(true)
+    false
   end
 
   def tail
@@ -97,23 +81,30 @@ class List
     if @head == nil
       @head = nil
     else
-      position = self.count - 1
+      position = count - 1
       if position == 0
         @head = nil
       else
-        #same code used in insert, needs to be turned into it's own method
-        #example def iterator(method,position)
-        count = 0
-        current_node = @head
-        while count < position
-          if count == (position -1)
-            current_node.next = nil #insert Methods in if statement example Index(pop)
-          else
-            current_node = current_node.next
-          end
-          count += 1
-        end
+        method_iterator("pop",position)
       end
+    end
+  end
+
+  def method_iterator(method, index, node = nil)
+    count = 0
+    current_node = @head
+    while count < index
+      if count == (index -1)
+        if method == "pop"
+          current_node.next = nil
+        else
+          node.next = current_node.next
+          current_node.next = node
+        end
+      else
+        current_node = current_node.next
+      end
+      count += 1
     end
   end
 
@@ -142,7 +133,7 @@ class List
   def find_by_index(index)
     current_node = @head
     counter = 0
-    if index <= (self.count - 1)
+    if index <= (count - 1)
       while counter < index
         current_node = current_node.next
         counter += 1

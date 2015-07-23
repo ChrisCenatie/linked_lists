@@ -233,8 +233,15 @@ class LinkedList < MiniTest::Test
     raise_equal NoMethodError,@three_item_list.remove_by_index(3)
   end
 
-  def test_it_removes_first_found_node_containing_given_value
+  def test_it_removes_node_containing_given_value
     @three_item_list.remove_by_value("Bob")
     assert_equal false, @three_item_list.includes?("Bob")
+  end
+
+  def test_it_removes_first_node_containing_data_given_data
+    @three_item_list.append("Chris")
+    @three_item_list.remove_by_value("Chris")
+    assert_equal "Chris", @three_item_list.find_by_index(2)
+    assert_equal "Bob", @three_item_list.head
   end
 end
