@@ -156,16 +156,27 @@ class List
   def remove_by_index(index)
     current_node = @head
     counter = 0
-    while counter < index
-      if counter == (index - 1)
-        current_node.next = current_node.next.next
-        current_node.next.next = nil
-      else
-        current_node = current_node.next
-        counter += 1
-      end
-    end
+    if (count - 1) == index
+      pop
+    elsif index == 0
+      @head = current_node.next
+      current_node.next = nil
+    else
+     count.times do
+       if counter == (index - 1)
+         current_node.next = current_node.next.next
+         current_node.next.next = nil
+       else
+         current_node = current_node.next
+       end
+         counter += 1
+     end
+   end
   end
 
+  def remove_by_value(data)
+    index = find_by_value(data)
+    remove_by_index(index)
+  end
 
 end

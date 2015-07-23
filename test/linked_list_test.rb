@@ -212,9 +212,29 @@ class LinkedList < MiniTest::Test
   end
 
   def test_it_removes_node_given_an_index
-    @three_item_list.remove_by_index(0)
-    assert_equal "Timothy", @three_item_list.find_by_index(0)
+    @three_item_list.remove_by_index(1)
+    assert_equal "Timothy", @three_item_list.find_by_index(1)
     assert_equal nil, @three_item_list.find_by_value("Bob")
   end
 
+  def test_it_removes_last_node_given_an_index
+    @three_item_list.remove_by_index(2)
+    assert_equal nil, @three_item_list.find_by_index(2)
+    assert_equal nil, @three_item_list.find_by_value("Timothy")
+  end
+
+  def test_it_removes_first_node_given_an_index_of_zero
+    @three_item_list.remove_by_index(0)
+    assert_equal "Bob", @three_item_list.head
+  end
+
+  def test_it_does_not_remove_any_node_if_index_greater_than_count
+    skip
+    raise_equal NoMethodError,@three_item_list.remove_by_index(3)
+  end
+
+  def test_it_removes_first_found_node_containing_given_value
+    @three_item_list.remove_by_value("Bob")
+    assert_equal false, @three_item_list.includes?("Bob")
+  end
 end
